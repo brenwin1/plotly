@@ -1,0 +1,37 @@
+"0","a <- list("
+"0","  autotick = FALSE,"
+"0","  ticks = ""outside"", # determine if ticks drawn or not `""""`: not drawn// ""outside"" (""inside""): axis; drawn outside (inside) the axis lines "
+"0","  tick0 = 0, # type: set number or categorical coordinate string "
+"0","  dtick = 0.25, # set; steps in between ticks"
+"0","  ticklen = 5, # length of ticks"
+"0","  tickwidth = 2, # width of ticks"
+"0","  tickcolor = toRGB(""blue"") # set tick colour "
+"0",")"
+"0",""
+"0","# simulate data "
+"0","s <- seq(from = 1, to = 4, by = 0.25)"
+"0",""
+"0","# generate plotly vis."
+"0","fig <- plotly::plot_ly(x = ~s,"
+"0","                       y = ~s) %>% "
+"0","  # modify plotly layout for axes"
+"0","  plotly::layout(xaxis = a, "
+"0","                 yaxis = a)"
+"0",""
+"0","fig"
+"2","No trace type specified:
+  Based on info supplied, a 'scatter' trace seems appropriate.
+  Read more about this trace type -> https://plotly.com/r/reference/#scatter
+"
+"2","No scatter mode specifed:
+  Setting the mode to markers
+  Read more about this attribute -> https://plotly.com/r/reference/#scatter-mode
+"
+"2","No trace type specified:
+  Based on info supplied, a 'scatter' trace seems appropriate.
+  Read more about this trace type -> https://plotly.com/r/reference/#scatter
+"
+"2","No scatter mode specifed:
+  Setting the mode to markers
+  Read more about this attribute -> https://plotly.com/r/reference/#scatter-mode
+"

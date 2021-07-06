@@ -1,0 +1,21 @@
+"0","plot_ly(x = seq(from = 2, to = 6, by = 2), # 2, 4, 6
+        y = seq(from = -3, to = 3, by = 3)) %>%  # -3, 0, 3
+  layout(xaxis = list(rangemode = ""tozero""),
+         yaxis = list(rangemode = ""nonnegative""))
+"
+"2","No trace type specified:
+  Based on info supplied, a 'scatter' trace seems appropriate.
+  Read more about this trace type -> https://plotly.com/r/reference/#scatter
+"
+"2","No scatter mode specifed:
+  Setting the mode to markers
+  Read more about this attribute -> https://plotly.com/r/reference/#scatter-mode
+"
+"2","No trace type specified:
+  Based on info supplied, a 'scatter' trace seems appropriate.
+  Read more about this trace type -> https://plotly.com/r/reference/#scatter
+"
+"2","No scatter mode specifed:
+  Setting the mode to markers
+  Read more about this attribute -> https://plotly.com/r/reference/#scatter-mode
+"

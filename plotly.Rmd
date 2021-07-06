@@ -1,0 +1,436 @@
+---
+title: "plotly"
+author: "Brenwin"
+date: "04/07/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo=TRUE)
+
+# load libraries
+library(tidyverse)
+library(plotly)
+```
+
+# 1. Fundamentals 
+
+## 1.1 Axes
+
+### Style Axes Ticks and Placement 
+
+```{r}
+a <- list(
+  autotick = FALSE,
+  ticks = "outside", # determine if ticks drawn or not `""`: not drawn// "outside" ("inside"): axis; drawn outside (inside) the axis lines 
+  tick0 = 0, # type: set number or categorical coordinate string 
+  dtick = 0.25, # set; steps in between ticks
+  ticklen = 5, # length of ticks
+  tickwidth = 2, # width of ticks
+  tickcolor = toRGB("blue") # set tick colour 
+)
+
+# simulate data 
+s <- seq(from = 1, to = 4, by = 0.25)
+
+# generate plotly vis.
+fig <- plotly::plot_ly(x = ~s,
+                       y = ~s) %>% 
+  # modify plotly layout for axes
+  plotly::layout(xaxis = a, 
+                 yaxis = a)
+
+fig
+```
+
+### Style Axes Titles and Ticks Labels
+```{r}
+# font 1 
+f1 <- list(
+  family = "Arial, sans-serif", # font family 
+  size = 26, # font size
+  color = "lightgrey" # colour of font
+)
+
+# font 2
+f2 <- list(
+  family = "Old Standard TT, serif", # font family 
+  size = 14, # font size
+  color = "black" # colour of font 
+)
+
+# arguments 
+a <- list(
+  title = "AXIS TITLE",
+  titlefont = f1, # apply font above; to axis title
+  showticklabels = TRUE, # *TRUE by default 
+  tickangle = 45, # set; angle of tick labels; wrt to the horizontal  
+  tickfont = f2, # above font above; to tick labels
+  exponentformat = "SI" # formatting rule for tick exponents "none": 1,000,000,000// "e": 1e+9// "E": 1E+9// "power": 1x10^9// "SI": 1G// "B": 1B
+)
+
+# simulate data
+s <- seq(from = 1e6, to = 1e7, length.out = 10)
+
+# initiate plotly visualisation
+plotly::plot_ly(x = ~s, 
+                y = ~s) %>% 
+  
+  # add traces(variables); to plotly 
+  plotly::add_markers() %>% # x = ~s, y = ~s
+  plotly::add_markers(y = ~rev(s)) %>% # x = ~s, y = ~reverse s 
+  
+  # modify layout of plotly 
+  plotly::layout(xaxis = a,
+                 yaxis = a,
+                 showlegend = FALSE) # no legend
+```
+
+
+### Style Axes and Zero-Lines
+```{r}
+ax <- list(
+  zeroline = TRUE, # draw line; along 0 value of the axis 
+  showline = TRUE, # draw line; bounding axis 
+  
+  mirror = "ticks", # determine if axis lines &/or ticks; are mirrored to opposite side of plotting area: "TRUE": axis lines mirrored// "ticks": axis lines & ticks mirrored// "FALSE": mirroring disabled// "all": axis lines; mirrored on all shared-axes subplots// "allticks": axis lines & ticks; mirrored on all shared-axes subplots
+  
+  gridcolor = toRGB("green"), # color of grid lines 
+  gridwidth = 2, # set width (in px); of grid lines 
+  
+  zerolinecolor = toRGB("red"), # zero line colour
+  zerolinewidth = 4, # zero line width
+  
+  linecolor = toRGB("orange"), # axis line color
+  linewidth = 6 # axis line width (in px)
+)
+
+# simulate data
+s <- seq(from = -1, to = 4, by = 1)
+
+plotly::plot_ly(x = ~s,
+                y = ~s) %>% 
+  # modify axes layout 
+  plotly::layout(xaxis = ax,
+                 yaxis = ax)
+
+```
+
+
+### Hide Axes Title, Lines, Ticks, Labels
+```{r}
+ax <- list(
+  title = "", # empty title
+  zeroline = FALSE, # remove zero-line
+  showline = FALSE, # remove axis lines
+  showticklabels = FALSE, # remove tick labels
+  showgrid = FALSE # remove grid lines
+)
+
+plotly::plot_ly(x = c(-1, 0, 1, 2, 3),
+                y = c(-1, 0, 1, 2, 3)) %>% 
+  # modify axes layouts
+  plotly::layout(xaxis = ax,
+                 yaxis = ax)
+```
+
+### reversed axes
+```{r}
+plotly::plot_ly(x = c(1, 2),
+                y = c(1, 2)) %>% 
+  # reverse x-axis
+  plotly::layout(xaxis = list(autorange = "reversed"))
+```
+
+```{r}
+x <- seq(from = 0, to = 10, length = 50)
+y <- runif(n = 50, min = 0, max = 10)
+
+
+plot_ly(x = x,
+        y = y) %>% 
+  # reverse x-axis; with range from 10 to 0 
+  layout(xaxis = list(range = c(10, 0))) 
+```
+
+### logarithmic axes
+```{r}
+# simulate data
+s <- seq(from = 1, to = 8, by = 1)
+
+plot_ly(x = ~s) %>% 
+  # add traces 
+  add_trace(x = ~s, # can omit 
+            y = ~exp(s), name = "exponential") %>% # exponential *log(exp(x)) = x
+  add_trace(x = ~s, # can omit
+            y = ~s, name = "linear") %>% # linear 
+  # y-axis; log scale
+  layout(yaxis = list(type = "log",
+                      title = "log(s)"))
+```
+
+### Categorical axes
+
+```{r}
+plotly::plot_ly(
+  x = c(109, "12F", 215), # product code
+  y = c(5, 2, 10),
+  type = "bar", # bar chart *default
+  name = "aisle 1",
+  text = c("cereal", "flour", "sugar") # hover text
+) %>% 
+  # modify plotly layout
+  plotly::layout(
+    
+    title = "Inventory", # plot title
+    
+    # x-axis
+    xaxis = list(type = "category", # categorical variable
+                 title = "product code"), # axis title
+    
+    # y-axis
+    yaxis = list(title = "# of items in stock", # axis title
+                 range = c(0, 10))
+  )
+```
+
+- other axis types
+  - "-": `plotly`; determine; axis type *default 
+  - "linear"
+  - "log"
+  - "date"
+  - "category"
+  - "multicategory"
+
+### Subcategory axes
+```{r}
+plot_ly(orientation = "h", # set orientation
+        line = list(color = "gray"), # set outline colour of boxplots
+        height = 400, # height of boxplots
+        width = 600) %>% # width of boxplots
+
+  # --- add boxplots 
+  add_boxplot(x = c(2, 3, 1, 5),
+              y = c("A", "A", "A", "A"),
+              name = "A") %>% 
+  add_boxplot(x = c(8, 3, 6, 5),
+              y = c("B", "B", "B", "B"),
+              name = "B") %>% 
+  add_boxplot(x = c(2, 3, 2, 5),
+              y = c("C", "C", "C", "C"),
+              name = "C") %>% 
+  add_boxplot(x = c(7.5, 3, 6, 4),
+              y = c("D", "D", "D", "D"),
+              name = "D") %>% 
+
+  layout(title = "", # no plot title
+         
+         # --- modify y-axis 
+         yaxis = list(autorange = TRUE, # set range automatically; based on input data
+                      categoryorder = "category descending", # orderspecify ordering logic; for categoricalv variables
+                      domain = c(0, 1), # set domain of axis 
+                      range = c(-0.5, 3.5), # set range of axis 
+                      showline = TRUE, # draw y-axis line 
+                      title = "", # no y-axis title
+                      type = "category"), # set axis type
+         
+         # --- set margins
+         margin = list(r = 10, # right margin (in px)
+                       t = 25, # top margin (in px)
+                       b = 40, # bottom margin (in px)
+                       l = 110), # left margin (in px)
+         
+         # set legend position
+         legend = list(x = 0.986145833333,
+                       y = 0.936263886049),
+         
+         
+         # --- add lines 
+         shapes = list(
+           # draw line in middle; distinguish One Two
+           list(
+             line = list(color = "rgba(68, 68, 68, 0.5)",
+                         width = 1),
+             type = "line",
+             x0 = -0.3,
+             x1 = 1.2, 
+             xref = "paper",
+             y0 = 0.5,
+             y1 = 0.5, 
+             yref = "paper"
+             ),
+           
+           # draw line on top 
+           list(line = list(color = "rgba(68, 68, 68, 0.63)",
+                            width = 1),
+           
+                type = "line",
+                x0 = -0.3,
+                x1 = 1.2,
+                xref = "paper",
+                y0 = 1,
+                y1 = 1,
+                yref = "paper"
+                )
+           ),
+         
+         # --- add annotations 
+         annotations = list(
+           
+           # add "Subgroup" annotation
+           list(x = -0.0951769406393,
+                y = 1.06972670892,
+                showarrow = FALSE,
+                text = "Subgroup",
+                xref = "paper", # set container "x" refers to: "container": spans entire width of the plot// "paper" refers to width of plotting area only 
+                yref = "paper"),
+           
+           # add "Group" annotation
+           list(x = -0.235516552511,
+                y = 1.07060587474,
+                showarrow = FALSE,
+                text = "Group",
+                xref = "paper",
+                yref = "paper"),
+           
+           # add "One" annotation
+           list(x = -0.235516552511,
+                y = 0.922906017856,
+                showarrow = FALSE,
+                text = "One",
+                xref = "paper",
+                yref = "paper"),
+           
+           # add "Two" annotation
+           list(x = -0.235516552511,
+                y = 0.375,
+                showarrow = FALSE,
+                text = "Two",
+                xref = "paper",
+                yref = "paper")
+         )
+  )
+```
+
+### fixed-ratio axes
+```{r}
+plot_ly(width = 800,
+        height = 500) %>% 
+  
+  # add bottom left figure
+  add_trace(x = c(0, 1, 1, 0, 0, 1, 1, 2, 2, 3, 3, 2, 2, 3),
+            y = c(0, 0, 1, 1, 3, 3, 2, 2, 3, 3, 1, 1, 0, 0),
+            mode = "lines") %>% 
+  # add top left figure
+  add_trace(x = c(0, 1, 2, 3),
+            y = c(1, 2, 4, 8),
+            yaxis = "y2",
+            mode = "lines") %>% 
+  # add bottom right figure
+  add_trace(x = c(1, 10, 100, 10, 1),
+            y = c(0, 1, 2, 3, 4),
+            xaxis = "x2",
+            yaxis = "y3",
+            mode = "lines") %>% 
+  # add top right figure
+  add_trace(x = c(1, 100, 30, 80, 1),
+            y = c(1, 1.5, 2, 2.5, 3),
+            xaxis = "x2",
+            yaxis = "y4",
+            mode = "lines") %>% 
+  
+  layout(title = "fixed-ratio axes",
+         xaxis = list(nticks = 10,
+                      domain = c(0, 0.45),
+                      title = "shared X axis"),
+         
+         yaxis = list(scaleanchor = "x",
+                      domain = c(0, 0.45),
+                      title = "1:1"),
+         
+         yaxis2 = list(scaleanchor = "x",
+                       scaleratio = 0.2,
+                       domain = c(0.55, 1),
+                       title = "1:5"),
+         
+         xaxis2 = list(type = "log",
+                       domain = c(0.55, 1),
+                       achor = "y3",
+                       title = "unconstrained log X"),
+         
+         yaxis3 = list(domain = c(0, 0.45),
+                                  anchor = "x2",
+                                  title = "Scale matches ->"),
+         yaxis4 = list(scaleanchor = "y3",
+                       domain = c(0.55, 1),
+                       anchor = "x2",
+                       title = "Scale matches <-"),
+         
+         showlegend = FALSE
+                       )
+```
+
+
+### range mode
+```{r}
+plot_ly(x = seq(from = 2, to = 6, by = 2), # 2, 4, 6
+        y = seq(from = -3, to = 3, by = 3)) %>%  # -3, 0, 3
+  layout(xaxis = list(rangemode = "tozero"), # range extends to zero; regardless of input data
+         yaxis = list(rangemode = "nonnegative")) # range is non-negative; regardless of input
+```
+
+- default: rangemode = "normal": range computed; in relation to extrema of input data
+
+### manual ranges
+```{r}
+set.seed(1)
+
+# vector
+x <- rnorm(n = 50, mean = 0, sd = 1) # 1, 2, ..., 8
+y <- rnorm(n = 50, mean = 0, sd = 1)
+
+plot_ly(x = x,
+        y = y) %>% 
+  layout(xaxis = list(range = c(0, 1)),
+         yaxis = list(range = c(0, 1)))
+
+
+```
+
+### modifying Axes for 3D plots
+```{r}
+set.seed(123)
+
+# create random data
+ds <- diamonds[sample(1:nrow(diamonds), size = 1000), ]
+
+# create lists; for axis properties
+f1 <- list(family = "Arial, sans-serif",
+           size = 18,
+           color = "lightgrey")
+
+f2 <- list(family = "Old Standard TT, serif",
+           size = 14,
+           color = "#ff9999")
+
+axis <- list(titlefont = f1,
+             tickfont = f2,
+             showgrid = F)
+
+scene = list(xaxis = axis,
+             yaxis = axis,
+             zaxis = axis,
+             camera = list(eye = list(x = -1.25, y = 1.25, z = 1.25)))
+
+# plot 3D scatterplot
+plot_ly(ds,
+        x = ~carat,
+        y = ~cut,
+        z = ~price,
+        type = "scatter3d",
+        mode = "markers",
+        market = list(size = 3)) %>% 
+  layout(title = "3D Scatter plot",
+         scene = scene)
+```
+

@@ -1,0 +1,38 @@
+"0","set.seed(123)"
+"0",""
+"0","ds <- diamonds[sample(1:nrow(diamonds), size = 1000), ]"
+"0",""
+"0","f1 <- list(family = ""Arial, sans-serif"","
+"0","           size = 18,"
+"0","           color = ""lightgrey"")"
+"0",""
+"0","f2 <- list(family = ""Old Standard TT, serif"","
+"0","           size = 14,"
+"0","           color = ""#ff9999"")"
+"0",""
+"0","axis <- list(titlefont = f1,"
+"0","             tickfont = f2,"
+"0","             showgrid = F)"
+"0",""
+"0","scene = list(xaxis = axis,"
+"0","             yaxis = axis,"
+"0","             zaxis = axis,"
+"0","             camera = list(eye = list(x = -1.25, y = 1.25, z = 1.25)))"
+"0",""
+"0","plot_ly(ds,"
+"0","        x = ~carat,"
+"0","        y = ~cut,"
+"0","        z = ~price,"
+"0","        type = ""scatter3d"","
+"0","        mode = ""markers"","
+"0","        market = list(size = 3)) %>% "
+"0","  layout(title = ""3D Scatter plot"","
+"0","         scene = scene)"
+"2","'scatter3d' objects don't have these attributes: 'market'
+Valid attributes include:
+'type', 'visible', 'showlegend', 'legendgroup', 'opacity', 'name', 'uid', 'ids', 'customdata', 'meta', 'hoverlabel', 'stream', 'transforms', 'uirevision', 'x', 'y', 'z', 'text', 'texttemplate', 'hovertext', 'hovertemplate', 'mode', 'surfaceaxis', 'surfacecolor', 'projection', 'connectgaps', 'line', 'marker', 'textposition', 'textfont', 'hoverinfo', 'error_x', 'error_y', 'error_z', 'xcalendar', 'ycalendar', 'zcalendar', 'scene', 'idssrc', 'customdatasrc', 'metasrc', 'xsrc', 'ysrc', 'zsrc', 'textsrc', 'texttemplatesrc', 'hovertextsrc', 'hovertemplatesrc', 'textpositionsrc', 'hoverinfosrc', 'key', 'set', 'frame', 'transforms', '_isNestedKey', '_isSimpleKey', '_isGraticule', '_bbox'
+"
+"2","'scatter3d' objects don't have these attributes: 'market'
+Valid attributes include:
+'type', 'visible', 'showlegend', 'legendgroup', 'opacity', 'name', 'uid', 'ids', 'customdata', 'meta', 'hoverlabel', 'stream', 'transforms', 'uirevision', 'x', 'y', 'z', 'text', 'texttemplate', 'hovertext', 'hovertemplate', 'mode', 'surfaceaxis', 'surfacecolor', 'projection', 'connectgaps', 'line', 'marker', 'textposition', 'textfont', 'hoverinfo', 'error_x', 'error_y', 'error_z', 'xcalendar', 'ycalendar', 'zcalendar', 'scene', 'idssrc', 'customdatasrc', 'metasrc', 'xsrc', 'ysrc', 'zsrc', 'textsrc', 'texttemplatesrc', 'hovertextsrc', 'hovertemplatesrc', 'textpositionsrc', 'hoverinfosrc', 'key', 'set', 'frame', 'transforms', '_isNestedKey', '_isSimpleKey', '_isGraticule', '_bbox'
+"

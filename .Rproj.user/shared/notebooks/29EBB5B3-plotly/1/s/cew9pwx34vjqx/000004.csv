@@ -1,0 +1,20 @@
+"0","plotly::plot_ly(x = c(1, 2),
+                y = c(1, 2)) %>% 
+  plotly::layout(xaxis = list(autorange = ""reversed""))
+"
+"2","No trace type specified:
+  Based on info supplied, a 'scatter' trace seems appropriate.
+  Read more about this trace type -> https://plotly.com/r/reference/#scatter
+"
+"2","No scatter mode specifed:
+  Setting the mode to markers
+  Read more about this attribute -> https://plotly.com/r/reference/#scatter-mode
+"
+"2","No trace type specified:
+  Based on info supplied, a 'scatter' trace seems appropriate.
+  Read more about this trace type -> https://plotly.com/r/reference/#scatter
+"
+"2","No scatter mode specifed:
+  Setting the mode to markers
+  Read more about this attribute -> https://plotly.com/r/reference/#scatter-mode
+"
